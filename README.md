@@ -14,6 +14,8 @@ The search functionality is implemented in [webidx.js](webidx.js) which uses [sq
 $ /path/to/webidx.pl -x index.html -x archives.html -o https://example.com -z . ./index.db
 ```
 
+You can run `webidx.pl --help` to see all the available command-line options.
+
 2. Include [webidx.js](webidx.js) in your web page:
 
 ```html
@@ -29,3 +31,11 @@ $ /path/to/webidx.pl -x index.html -x archives.html -o https://example.com -z . 
 ```
 
 When the user hits the return key in the search box, a modal dialog will pop up containing search results!
+
+The object that's passed to `window.webidx.search()` can have the following properties:
+
+* `dbfile`: URL of the SQLite database file
+* `query`: search query
+* `errorCallback`: a callback which is passed any error string as an argument.
+* `titleSuffix`: a string to be removed from the end of page titles.
+* `titlePrefix`: a string to be removed from the beginning of page titles.
