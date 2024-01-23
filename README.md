@@ -2,7 +2,7 @@
 
 webidx is a client-side search engine for static websites.
 
-It works by using a simple [webidx.pl](webidx.pl) Perl script to generate an SQLite database of static HTML files. The SQLite database is then published alongside the static content.
+It works by using a simple Perl script ([webidx.pl](webidx.pl)) to generate an SQLite database containing an index of static HTML files. The SQLite database is then published alongside the static content.
 
 The search functionality is implemented in [webidx.js](webidx.js) which uses [sql.js](https://github.com/sql-js/sql.js) to provide an interface to the SQLite file.
 
@@ -16,9 +16,11 @@ $ /path/to/webidx.pl -x index.html -x archives.html -o https://example.com -z . 
 
 You can run `webidx.pl --help` to see all the available command-line options.
 
-2. Include [webidx.js](webidx.js) in your web page:
+2. Include [sql.js](https://cdnjs.com/libraries/sql.js), [pako](https://cdnjs.com/libraries/pako) and [webidx.js](webidx.js) in your web page:
 
 ```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.1/sql-wasm.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
 <script src="/path/to/webidx.js"></script>
 ```
 
