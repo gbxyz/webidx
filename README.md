@@ -6,6 +6,8 @@ It works by using a simple Perl script ([webidx.pl](webidx.pl)) to generate an S
 
 The search functionality is implemented in [webidx.js](webidx.js) which uses [sql.js](https://github.com/sql-js/sql.js) to provide an interface to the SQLite file.
 
+You can see a live demo of it [here](https://gavinbrown.xyz/webidx-demo/).
+
 ## How to use it
 
 1. use [webidx.pl](webidx.pl) to generate the index:
