@@ -9,7 +9,6 @@ use HTML::Parser;
 use IPC::Open2;
 use IO::File;
 use List::Util qw(uniq none any);
-use URI;
 use feature qw(say);
 use open qw(:encoding(utf8));
 use strict;
