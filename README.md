@@ -11,7 +11,7 @@ The search functionality is implemented in [webidx.js](webidx.js) which uses [sq
 1. use [webidx.pl](webidx.pl) to generate the index:
 
 ```
-$ /path/to/webidx.pl -x index.html -x archives.html -o https://example.com -z . ./index.db
+$ /path/to/webidx.pl -x index.html -x archives.html --xP secret_files -o https://example.com -z . ./index.db
 ```
 
 You can run `webidx.pl --help` to see all the available command-line options.
