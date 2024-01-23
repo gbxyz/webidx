@@ -15,13 +15,13 @@ use strict;
 use utf8;
 use vars qw($VERSION);
 
-$VERSION = 0.01;
+$VERSION = 0.02;
 
 #
 # parse command line options
 #
-my (@exclude, $compress, $origin);
-die() unless (GetOptions('exclude|x=s' => \@exclude, 'compress|z' => \$compress, 'origin|o=s' => \$origin));
+my (@exclude, @excludePattern, $compress, $origin);
+die() unless (GetOptions('exclude|x=s' => \@exclude, 'excludePattern|xP=s' => \@excludePattern, 'compress|z' => \$compress, 'origin|o=s' => \$origin));
 
 @exclude = map { abs_path($_) } @exclude;
 
@@ -154,6 +154,9 @@ sub scan_directory {
 
     foreach my $file (map { abs_path($_) } bsd_glob(sprintf('%s/*', $dir))) {
         if (-d $file) {
+
+            next if (any { $file =~ m/\Q$_/i } @excludePattern);
+
             #
             # directory, scan it
             #
@@ -175,7 +178,7 @@ sub scan_directory {
 sub index_html {
     my $file = shift;
 
-    return if (any { $_ eq $file } @exclude);
+    return if (any { $_ eq $file } @exclude) || (any { $file =~ m/\Q$_/i } @excludePattern);
 
     my $currtag;
     my $text;
@@ -260,13 +263,15 @@ sub index_html {
 
 =head1 SYNOPSIS
 
-    webidx [-x FILE [-x FILE2 [...]]] [-o ORIGIN] [-z] [DIRECTORY] [DBFILE]
+    webidx [-x FILE [-x FILE2 [...]]] [--xP PATTERN [--xP PATTERN2 [...]]] [-o ORIGIN] [-z] [DIRECTORY] [DBFILE]
 
 This will cause all HTML files in C<DIRECTORY> to be indexed, and the resulting database written to C<DBFILE>. The supported options are:
 
 =over
 
 =item * C<-x FILE> specifies a file to be excluded. May be specified multiple times.
+
+=item * C<--xP PATTERN> specifies a pattern of folders and files to be excluded. May be specified multiple times.
 
 =item * C<-o ORIGIN> specifies a base URL which will be prepended to the filenames (once C<DIRECTORY> has been removed).
 
