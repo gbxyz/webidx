@@ -23,7 +23,7 @@ $ /path/to/webidx.pl -x index.html -x archives.html -o https://example.com -z . 
 3. Create a search form:
 
 ```html
-<form onsubmit="window.webidx.search({dbfile:"/webidx.db.gz",query:document.getElementById('q').value});return false;">
+<form onsubmit="window.webidx.search({dbfile:'/webidx.db.gz',query:document.getElementById('q').value});return false;">
   <input id="q" type="search">
 </form>
 ```
