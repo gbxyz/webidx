@@ -40,6 +40,7 @@ The object that's passed to `window.webidx.search()` can have the following prop
 
 * `dbfile`: URL of the SQLite database file
 * `query`: search query
+* `resultCallback`: a callback which is passed an array of search results. Each result is an object with the `title` and `url` properties. If not defined, a modal dialog will be displayed.
 * `errorCallback`: a callback which is passed any error string as an argument.
 * `titleSuffix`: a string to be removed from the end of page titles.
 * `titlePrefix`: a string to be removed from the beginning of page titles.

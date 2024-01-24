@@ -178,6 +178,11 @@ webidx.regExpQuote = function (str) {
 };
 
 webidx.displayResults = function (pages, params) {
+  var callback = params.resultCallback ?? webidx.displayDialog;
+  callback(pages, params);
+};
+
+webidx.displayDialog = function (pages, params) {
   var dialog = document.createElement('dialog');
   dialog.classList.add('webidx-results-dialog')
 
