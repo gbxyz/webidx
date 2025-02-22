@@ -21,7 +21,7 @@ You can run `webidx.pl --help` to see all the available command-line options.
 2. Include [sql.js](https://cdnjs.com/libraries/sql.js), [pako](https://cdnjs.com/libraries/pako) and [webidx.js](webidx.js) in your web page:
 
 ```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.1/sql-wasm.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.12.0/sql-wasm.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
 <script src="/path/to/webidx.js"></script>
 ```
