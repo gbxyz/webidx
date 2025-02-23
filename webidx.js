@@ -42,134 +42,35 @@ webidx.loadDB = function (params) {
 
 webidx.initializeDB = function (arrayBuffer) {
   webidx.db = new webidx.sql.Database(window.pako.inflate(new Uint8Array(arrayBuffer)));
-
-  //
-  // prepare statements
-  //
-  webidx.wordQuery  = webidx.db.prepare("SELECT `id` FROM `words` WHERE (`word`=:word)");
-  webidx.idxQuery   = webidx.db.prepare("SELECT `page_id` FROM `index` WHERE (`word`=:word)");
-  webidx.pageQuery  = webidx.db.prepare("SELECT `url`,`title` FROM `pages` WHERE (`id`=:id)");
-};
-
-webidx.getWordID = function (word) {
-  webidx.wordQuery.bind([word]);
-  webidx.wordQuery.step();
-  var word_id = webidx.wordQuery.get().shift();
-
-  webidx.wordQuery.reset();
-
-  return word_id;
-};
-
-webidx.getPagesHavingWord = function (word_id) {
-  var pages = [];
-
-  webidx.idxQuery.bind([word_id]);
-
-  while (webidx.idxQuery.step()) {
-    pages.push(webidx.idxQuery.get().shift());
-  }
-
-  webidx.idxQuery.reset();
-
-  return pages;
-};
-
-webidx.getPage = function (page_id) {
-  webidx.pageQuery.bind([page_id]);
-
-  webidx.pageQuery.step();
-
-  var page = webidx.pageQuery.getAsObject();
-
-  webidx.pageQuery.reset();
-
-  return page;
 };
 
 webidx.query = function (query) {
   //
+  // search results
+  //
+  let pages = [];
+
+  //
   // split the search term into words
   //
-  var words = query.toLowerCase().split(" ");
+  const words = query.trim().toLowerCase().split(" ");
 
-  //
-  // this array maps page ID to rank
-  //
-  var pageRank = [];
-
-  //
-  // iterate over each word
-  //
-  while (words.length > 0) {
-    var word = words.shift();
-
-    var invert = false;
-    if (0 == word.indexOf("-")) {
-      invert = true;
-      word = word.substring(1);
-    }
-
-    var word_id = webidx.getWordID(word);
-
-    //
-    // if the word isn't present, ignore it
-    //
-    if (word_id) {
-      var pages = webidx.getPagesHavingWord(word_id);
-
-      pages.forEach(function (page_id) {
-        if (invert) {
-          if (pageRank[page_id]) {
-            pageRank[page_id] -= 65535;
-
-          } else {
-            pageRank[page_id] = -65535;
-            
-          }
-
-        } else {
-          if (pageRank[page_id]) {
-            pageRank[page_id]++;
-
-          } else {
-            pageRank[page_id] = 1;
-
-          }
-        }
-      });
-    }
+  let queryBuffer = [];
+  for (var i = 0 ; i < words.length ; i++) {
+    queryBuffer.push(`SELECT page_id,SUM(hits) AS hits FROM \`index\`,words WHERE (word_id=words.id AND word=:word${i}) GROUP BY page_id`);
   }
 
-  //
-  // transform the results into a format that can be sorted
-  //
-  var sortedPages = [];
+  const sth = webidx.db.prepare(
+    "SELECT pages.*,page_id,SUM(hits) AS hits FROM ("
+    + queryBuffer.join(" UNION ")
+    + ") JOIN pages ON pages.id=page_id GROUP BY page_id ORDER BY hits DESC"
+  );
 
-  pageRank.forEach(function (rank, page_id) {
-    if (rank > 0) {
-      sortedPages.push({rank: rank, page_id: page_id});
-    }
-  })
+  sth.bind(words);
 
-  //
-  // sort the results in descending rank order
-  //
-  sortedPages.sort(function(a, b) {
-    return b.rank - a.rank;
-  });
-
-  //
-  // this will be populated with the actual pages
-  //
-  var pages = [];
-
-  //
-  // get page data for each result
-  //
-  sortedPages.forEach(function(result) {
-    pages.push(webidx.getPage(result.page_id));
-  });
+  while (sth.step()) {
+    pages.push(sth.getAsObject());
+  }
 
   return pages;
 };
