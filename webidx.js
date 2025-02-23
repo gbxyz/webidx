@@ -175,7 +175,7 @@ webidx.query = function (query) {
 };
 
 webidx.regExpQuote = function (str) {
-  return str.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+  return str.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
 };
 
 webidx.displayResults = function (pages, params) {
@@ -184,8 +184,8 @@ webidx.displayResults = function (pages, params) {
 };
 
 webidx.displayDialog = function (pages, params) {
-  var dialog = document.createElement('dialog');
-  dialog.classList.add('webidx-results-dialog')
+  var dialog = document.createElement("dialog");
+  dialog.classList.add("webidx-results-dialog")
 
   dialog.appendChild(document.createElement("h2")).appendChild(document.createTextNode("Search Results"));
 
