@@ -105,6 +105,8 @@ foreach my $word (keys(%{$index})) {
     # for each page...
     #
     foreach my $page (keys(%{$index->{$word}})) {
+        my $hits = $index->{$word}->{$page};
+
         #
         # clean up the page title by removing leading and trailing whitespace
         #
@@ -133,7 +135,7 @@ foreach my $word (keys(%{$index})) {
         #
         # insert an index entry
         #
-        $index_sth->execute($word_ids->{$word}, $page_ids->{$page}) || die();
+        $index_sth->execute($word_ids->{$word}, $page_ids->{$page}, $hits) || die();
     }
 }
 
