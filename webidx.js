@@ -1,5 +1,5 @@
 window.webidx = {};
-webidx = window.webidx;
+const webidx = window.webidx;
 
 webidx.search = async function (params) {
   if (!webidx.sql) {
@@ -19,7 +19,7 @@ webidx.search = async function (params) {
 };
 
 webidx.loadDB = function (params) {
-  var xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
 
   xhr.open('GET', params.dbfile);
   xhr.timeout = params.timeout ?? 5000;
