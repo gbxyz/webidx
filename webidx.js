@@ -9,7 +9,7 @@ webidx.search = async function (params) {
     webidx.sql = await window.initSqlJs({locateFile: file => `https://sql.js.org/dist/${file}`});
   }
 
-  if (webidx.hasOwnProperty('db')) {
+  if (webidx.hasOwnProperty("db")) {
     webidx.displayResults(webidx.query(params.query), params);
 
   } else {
@@ -21,13 +21,13 @@ webidx.search = async function (params) {
 webidx.loadDB = function (params) {
   const xhr = new XMLHttpRequest();
 
-  xhr.open('GET', params.dbfile);
+  xhr.open("GET", params.dbfile);
   xhr.timeout = params.timeout ?? 5000;
-  xhr.responseType = 'arraybuffer';
+  xhr.responseType = "arraybuffer";
 
   xhr.ontimeout = function() {
-    if (params.hasOwnProperty('errorCallback')) {
-      params.errorCallback('Unable to load index, please refresh the page.');
+    if (params.hasOwnProperty("errorCallback")) {
+      params.errorCallback("Unable to load index, please refresh the page.");
     }
   };
 
