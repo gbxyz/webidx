@@ -187,47 +187,47 @@ webidx.displayDialog = function (pages, params) {
   var dialog = document.createElement('dialog');
   dialog.classList.add('webidx-results-dialog')
 
-  dialog.appendChild(document.createElement('h2')).appendChild(document.createTextNode('Search Results'));
+  dialog.appendChild(document.createElement("h2")).appendChild(document.createTextNode("Search Results"));
 
   if (pages.length < 1) {
-    dialog.appendChild(document.createElement('p')).appendChild(document.createTextNode('Nothing found.'));
+    dialog.appendChild(document.createElement("p")).appendChild(document.createTextNode("Nothing found."));
 
   } else {
-    var ul = dialog.appendChild(document.createElement('ul'));
+    var ul = dialog.appendChild(document.createElement("ul"));
 
     pages.forEach(function(page) {
       var titleText = page.title;
 
       if (params.titleSuffix) {
-        titleText = titleText.replace(new RegExp(webidx.regExpQuote(params.titleSuffix)+'$'), '');
+        titleText = titleText.replace(new RegExp(webidx.regExpQuote(params.titleSuffix)+"$"), "");
       }
 
       if (params.titlePrefix) {
-        titleText = titleText.replace(new RegExp('^' + webidx.regExpQuote(params.titleSuffix)), '');
+        titleText = titleText.replace(new RegExp("^" + webidx.regExpQuote(params.titleSuffix)), "");
       }
 
-      var li = ul.appendChild(document.createElement('li'));
-      var a = li.appendChild(document.createElement('a'));
-      a.setAttribute('href', page.url);
+      var li = ul.appendChild(document.createElement("li"));
+      var a = li.appendChild(document.createElement("a"));
+      a.setAttribute("href", page.url);
       a.appendChild(document.createTextNode(titleText));
-      li.appendChild(document.createElement('br'));
+      li.appendChild(document.createElement("br"));
 
-      var span = li.appendChild(document.createElement('span'));
-      span.classList.add('webidx-page-url');
+      var span = li.appendChild(document.createElement("span"));
+      span.classList.add("webidx-page-url");
       span.appendChild(document.createTextNode(page.url));
     });
   }
 
-  var form = dialog.appendChild(document.createElement('form'));
-  form.setAttribute('method', 'dialog');
+  var form = dialog.appendChild(document.createElement("form"));
+  form.setAttribute("method", "dialog");
 
-  var button = form.appendChild(document.createElement('button'));
-  button.setAttribute('autofocus', true);
-  button.appendChild(document.createTextNode('Close'));
+  var button = form.appendChild(document.createElement("button"));
+  button.setAttribute("autofocus", true);
+  button.appendChild(document.createTextNode("Close"));
 
   document.body.appendChild(dialog);
 
-  dialog.addEventListener('close', function() {
+  dialog.addEventListener("close", function() {
     dialog.parentNode.removeChild(dialog);
   });
 
