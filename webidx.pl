@@ -21,15 +21,20 @@ $VERSION = 0.02;
 # parse command line options
 #
 my (@exclude, @excludePattern, $compress, $origin);
-die() unless (GetOptions('exclude|x=s' => \@exclude, 'excludePattern|xP=s' => \@excludePattern, 'compress|z' => \$compress, 'origin|o=s' => \$origin));
+die() unless (GetOptions(
+    'exclude|x=s'           => \@exclude,
+    'excludePattern|xP=s'   => \@excludePattern,
+    'compress|z'            => \$compress,
+    'origin|o=s'            => \$origin
+));
 
 @exclude = map { abs_path($_) } @exclude;
 
 #
 # determine the source directory and the database filename
 #
-my $dir = abs_path(shift(@ARGV) || '.');
-my $dbfile = abs_path(shift(@ARGV) || $dir.'/webidx.db');
+my $dir     = abs_path(shift(@ARGV) || '.');
+my $dbfile  = abs_path(shift(@ARGV) || $dir.'/webidx.db');
 
 #
 # initialise the database
