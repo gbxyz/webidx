@@ -33,7 +33,8 @@ webidx.loadDB = function (params) {
 
   xhr.onload = function() {
     webidx.initializeDB(this.response);
-    webidx.displayResults(webidx.query(params.query), params);
+    const results = webidx.query(params.query);
+    webidx.displayResults(results, params);
   };
 
   xhr.send();
