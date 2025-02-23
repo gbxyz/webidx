@@ -79,11 +79,11 @@ $db->do(qq{BEGIN});
 
 $db->do(qq{CREATE TABLE `pages` (`id` INTEGER PRIMARY KEY, `url` TEXT, `title` TEXT)});
 $db->do(qq{CREATE TABLE `words` (`id` INTEGER PRIMARY KEY, `word` TEXT)});
-$db->do(qq{CREATE TABLE `index` (`id` INTEGER PRIMARY KEY, `word` INT, `page_id` INT)});
+$db->do(qq{CREATE TABLE `index` (`id` INTEGER PRIMARY KEY, `word_id` INT, `page_id` INT, `hits` INT)});
 
 my $word_sth    = $db->prepare(qq{INSERT INTO `words` (`word`) VALUES (?)});
 my $page_sth    = $db->prepare(qq{INSERT INTO `pages` (`url`, `title`) VALUES (?, ?)});
-my $index_sth   = $db->prepare(qq{INSERT INTO `index` (`word`, `page_id`) VALUES (?, ?)});
+my $index_sth   = $db->prepare(qq{INSERT INTO `index` (`word_id`, `page_id`, `hits`) VALUES (?, ?, ?)});
 
 my $word_ids = {};
 my $page_ids = {};
