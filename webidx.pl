@@ -189,6 +189,7 @@ sub index_html {
 
     my $currtag;
     my $text;
+    my $noindex;
     my $parser = HTML::Parser->new(
         #
         # text handler
@@ -213,6 +214,11 @@ sub index_html {
         # start tag handler
         #
         'start_h' => [sub {
+            #
+            # set $noindex if a <meta> tag is found
+            #
+            $noindex = 1 if ('meta' eq $_[0] && 'robots' eq $_[1]->{'name'} && $_[1]->{'content'} =~ m/noindex/i;
+
             #
             # add the alt attributes of images, and any title attributes found
             #
@@ -248,6 +254,8 @@ sub index_html {
     #
     $parser->parse_file($fh);
     $fh->close;
+
+    return if ($noindex);
 
     my @words = grep { my $w = $_ ; none { $w eq $_ } @common } # filter out common words
                 grep { /\w/ }                                   # filter out strings that don't contain at least one word character
