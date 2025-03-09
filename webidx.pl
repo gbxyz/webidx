@@ -217,12 +217,12 @@ sub index_html {
             #
             # set $noindex if a <meta> tag is found
             #
-            $noindex = 1 if ('meta' eq $_[0] && 'robots' eq $_[1]->{'name'} && $_[1]->{'content'} =~ m/noindex/i;
+            $noindex = 1 if ('meta' eq $_[0] && 'robots' eq $_[1]->{'name'} && $_[1]->{'content'} =~ m/noindex/i);
 
             #
             # add the alt attributes of images, and any title attributes found
             #
-            $text .= " ".$_[1]->{'alt'} if (lc('img') eq $_[0]);
+            $text .= " ".$_[1]->{'alt'} if ('img' eq $_[0]);
             $text .= " ".$_[1]->{'title'} if (defined($_[1]->{'title'}));
 
             $currtag = $_[0];
