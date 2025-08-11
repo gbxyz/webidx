@@ -20,12 +20,13 @@ $VERSION = 0.02;
 #
 # parse command line options
 #
-my (@exclude, @excludePattern, $compress, $origin);
+my (@exclude, @excludePattern, $compress, $origin, $ignoreNoIndex);
 die() unless (GetOptions(
     'exclude|x=s'           => \@exclude,
     'excludePattern|xP=s'   => \@excludePattern,
     'compress|z'            => \$compress,
-    'origin|o=s'            => \$origin
+    'origin|o=s'            => \$origin,
+    'ignore-noindex|n'      => \$ignoreNoIndex,
 ));
 
 @exclude = map { abs_path($_) } @exclude;
@@ -217,7 +218,7 @@ sub index_html {
             #
             # set $noindex if a <meta> tag is found
             #
-            $noindex = 1 if ('meta' eq $_[0] && 'robots' eq $_[1]->{'name'} && $_[1]->{'content'} =~ m/noindex/i);
+            $noindex = 1 if (!$ignoreNoIndex && 'meta' eq $_[0] && 'robots' eq $_[1]->{'name'} && $_[1]->{'content'} =~ m/noindex/i);
 
             #
             # add the alt attributes of images, and any title attributes found
@@ -291,6 +292,8 @@ This will cause all HTML files in C<DIRECTORY> to be indexed, and the resulting 
 =item * C<-o ORIGIN> specifies a base URL which will be prepended to the filenames (once C<DIRECTORY> has been removed).
 
 =item C<-z> specifies that the database file should be compressed once generated. If specified, the database will be at C<DBFILE.gz>.
+
+=item C<-n> instructs webidx to ignore the C<noindex> meta option.
 
 =item * C<DIRECTORY> is the directory to be indexed, defaults to the current working directory.
 
